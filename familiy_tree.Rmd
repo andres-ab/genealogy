@@ -1,8 +1,31 @@
-# setwd("~/workspace/fishercrawford")
+---
+title: "Family tree viz"
+author: "Andy Ab"
+date: "Febrero de 2020"
+output:
+    html_document:
+        code_download: false
+        df_print: paged
+    pdf_document: default
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Intro
+
+Mi tía Juani es la historiadora de la familia y hace poco me sorprendió con unos textos.
+
+Dado mi interés por la visualización de datos, hice una mini investigación de cómo capturar visualmente un arbol genealógico o las fechas familiares. Con esto me encontré con un código en `R` que con bastante poco esfuerzo logré adaptar. Tururú. Aquí los resultados de la primera prueba, contento con ellos.
+
+```{r carga paquetes y datos, message = FALSE, warning = FALSE}
 
 library(ggplot2)
 library(grid)
 library(scales)
+library(dplyr)
+library(plotly)
 
 people <- read.csv2("people_aab.csv",
                     stringsAsFactors = FALSE)
@@ -11,16 +34,23 @@ marriages <- read.csv2("marriages_aab.csv",
 births <- read.csv2("births_aab.csv",
                     stringsAsFactors = FALSE)
 
+```
+
+Mini procesamiento de los datos.
+
+```{r preprocessing, echo = FALSE}
+
 people$start = as.Date(people$start) 
 people$end = as.Date(people$end) 
 births$date = as.Date(births$date) 
 marriages$start = as.Date(marriages$start) 
-marriages$end = as.Date(marriages$end) 
+marriages$end = as.Date(marriages$end)
 
-# cairo_pdf(height = 8,
-#           width = 10.5)
+```
 
-library(dplyr)
+Ahora sí el código de `ggplot`.
+
+```{r ggplot code, warning = FALSE}
 
 tree <- ggplot() +
     geom_rect(data = marriages,
@@ -47,15 +77,14 @@ tree <- ggplot() +
                  aes(x = date,
                      xend = date,
                      y = mother,
-                     yend = child),
-                 color = 'grey') +
+                     yend = child)) +
     geom_text(data = people,
               hjust = -0.05,
-              family = "Helvetica Neue",
+              family = "Georgia",
               size = 2,
-              aes(label = name,
+              aes(label = initials,
                   x = start,
-                  y = initials)) +
+                  y = initials)) + # name
     scale_colour_manual(values = c("white","lightgreen", "lightblue")) +
     scale_y_discrete(breaks = NULL, 
                      name = "",
@@ -73,18 +102,55 @@ tree <- ggplot() +
                                    units = 'cm'),
           plot.title = element_text(size = 18, vjust = 1)) +
     # labs(title = expression(atop("Domingo Alberto Brosio Descendants",
-    #                              atop(italic("compiled and vizualized by Andrew Ab"), "")))) +
+    #                              atop(italic("Compiled and vizualized by Andrew Ab"), "")))) +
     geom_vline(xintercept = as.numeric(as.Date("2020-02-29")),
                color = 'darkgreen',
                alpha = 0.5,
                linetype = 'dashed',
                size = 1) +
     labs(title = "Domingo Alberto Brosio Descendants",
-         subtitle = "compiled and vizualized by Andrew Ab")
+         subtitle = "Compiled and vizualized by Andrew Ab")
 tree
 
-library(plotly)
+```
+
+Dado que quiero explorar algo interativo, va la prueba con plotly.
+
+```{r plotly test}
 
 ggplotly(tree)
 
-# dev.off()
+
+```
+
+Just for the record, aquí están la estructura de la fuente de datos.
+
+###### Nacimientos
+
+```{r nacimientos}
+head(births)
+```
+
+###### Casamientos
+
+```{r casamientos}
+head(marriages)
+```
+
+###### Personas
+
+```{r personas}
+head(people %>% select(-name))
+```
+
+Pido disculpas de antemano pues varias fechas no son correctas pero las usé para esta *prueba de concepto*.
+
+*For the sake of privacy*, modifiqué un poco el código (el gráfico mostraba los nombres completos).
+
+Se podría escalar algo así, pero como todo, una buena fuente de datos es importante.
+
+### Agradecimientos
+
+- A mi tía por siempre impulsar estas iniciativas. <3
+
+- A Nicolas Krutchen por compartir el [código en su repo de Github](https://github.com/nicolaskruchten/genealogy).
