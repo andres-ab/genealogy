@@ -60,7 +60,7 @@ tree <- ggplot() +
                   xmax = end,
                   ymin = p1,
                   ymax = p2)) +
-    geom_segment(data = people %>% arrange(start),
+    geom_segment(data = people,
                  aes(x = start,
                      xend = end,
                      y = initials,
