@@ -1,7 +1,7 @@
 ---
-title: "Family tree viz"
-author: "Andy Ab"
-date: "Febrero de 2020"
+title: 'Family tree viz'
+author: 'Andy Ab'
+date: 'Febrero de 2020'
 output:
     html_document:
         code_download: false
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Mi tía Juani es la historiadora de la familia y hace poco me sorprendió con unos textos.
 
-Dado mi interés por la visualización de datos, hice una mini investigación de cómo capturar visualmente un arbol genealógico o las fechas familiares. Con esto me encontré con un código en `R` que con bastante poco esfuerzo logré adaptar. Tururú. Aquí los resultados de la primera prueba, contento con ellos.
+Dado mi interés por la visualización de datos, hice una mini investigación de cómo capturar visualmente un arbol genealógico o las fechas familiares. Con esto me encontré con un código en `R` que con bastante poco esfuerzo logré adaptar. Aquí los resultados de la primera prueba, estoy contento con ellos.
 
 ```{r carga paquetes y datos, message = FALSE, warning = FALSE}
 
@@ -27,11 +27,11 @@ library(scales)
 library(dplyr)
 library(plotly)
 
-people <- read.csv2("people_aab.csv",
+people <- read.csv2('people_aab.csv',
                     stringsAsFactors = FALSE)
-marriages <- read.csv2("marriages_aab.csv",
+marriages <- read.csv2('marriages_aab.csv',
                        stringsAsFactors = FALSE)
-births <- read.csv2("births_aab.csv",
+births <- read.csv2('births_aab.csv',
                     stringsAsFactors = FALSE)
 
 ```
@@ -66,8 +66,8 @@ tree <- ggplot() +
                      yend = initials,
                      color = gender),
                  size = 2.5) +
-    geom_vline(xintercept = seq(as.numeric(as.Date("1915-01-01")),
-                                as.numeric(as.Date("2021-01-01")),
+    geom_vline(xintercept = seq(as.numeric(as.Date('1915-01-01')),
+                                as.numeric(as.Date('2021-01-01')),
                                 by = 5*365),
                color = 'white',
                alpha = 0.5) +
@@ -80,64 +80,63 @@ tree <- ggplot() +
                      yend = child)) +
     geom_text(data = people,
               hjust = -0.05,
-              family = "Georgia",
+              family = 'Georgia',
               size = 2,
               aes(label = initials,
                   x = start,
                   y = initials)) + # name
-    scale_colour_manual(values = c("white","lightgreen", "lightblue")) +
+    scale_colour_manual(values = c('white', 'lightgreen', 'lightblue')) +
     scale_y_discrete(breaks = NULL, 
-                     name = "",
+                     name = '',
                      limits = rev(people$initials)) +
-    scale_x_date(breaks = "10 year",
+    scale_x_date(breaks = '10 year',
                  minor_breaks = NULL,
-                 labels = date_format("%Y"),
-                 limits = c(as.Date("1910-01-01"),
-                            as.Date("2025-01-01")),
-                 name = "") +
+                 labels = date_format('%Y'),
+                 limits = c(as.Date('1910-01-01'),
+                            as.Date('2025-01-01')),
+                 name = '') +
     theme(legend.position = 'none',
           panel.background = element_blank(),
-          text = element_text(family = "Georgia"),
+          text = element_text(family = 'Georgia'),
           axis.ticks.length = unit(0,
                                    units = 'cm'),
           plot.title = element_text(size = 18, vjust = 1)) +
-    # labs(title = expression(atop("Domingo Alberto Brosio Descendants",
-    #                              atop(italic("Compiled and vizualized by Andrew Ab"), "")))) +
-    geom_vline(xintercept = as.numeric(as.Date("2020-02-29")),
+    geom_vline(xintercept = as.numeric(as.Date('2020-02-29')),
                color = 'darkgreen',
                alpha = 0.5,
                linetype = 'dashed',
                size = 1) +
-    labs(title = "Domingo Alberto Brosio Descendants",
-         subtitle = "Compiled and vizualized by Andrew Ab")
+    labs(title = 'Domingo Brosio Descendants',
+         subtitle = 'Compiled and vizualized by Andrew Ab')
 tree
 
 ```
 
-Dado que quiero explorar algo interativo, va la prueba con plotly.
+Dado que quiero explorar algo interativo, va la prueba con `plotly`.
 
-```{r plotly test}
+*Nota del autor:* creo que esto rompe la página en Firefox, así lo siento por la audiencia (yo incluido) que deseaba un gráfico interactivo.
+
+```{r plotly test, eval = FALSE}
 
 ggplotly(tree)
-
 
 ```
 
 Just for the record, aquí están la estructura de la fuente de datos.
 
-###### Nacimientos
+##### Nacimientos
 
 ```{r nacimientos}
 head(births)
 ```
 
-###### Casamientos
+##### Casamientos
 
 ```{r casamientos}
 head(marriages)
 ```
 
-###### Personas
+##### Personas
 
 ```{r personas}
 head(people %>% select(-name))
@@ -145,9 +144,9 @@ head(people %>% select(-name))
 
 Pido disculpas de antemano pues varias fechas no son correctas pero las usé para esta *prueba de concepto*.
 
-*For the sake of privacy*, modifiqué un poco el código (el gráfico mostraba los nombres completos).
+*For the sake of privacy*, modifiqué un poco el código, porque el plot mostraba los nombres completos y no le he pedido permiso a nadie para hacerlo.
 
-Se podría escalar algo así, pero como todo, una buena fuente de datos es importante.
+Se puede escalar algo así, pero como todo, tener bien prolija la fuente de datos es importante.
 
 ### Agradecimientos
 
