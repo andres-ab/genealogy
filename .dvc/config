@@ -1,0 +1,6 @@
+['remote "family_tree_gdfolder"']
+url = gdrive://root/family_tree_data
+gdrive_client_id = 1078775121694-6ms878vu833sa6ikhtc41ou63ghf2hge.apps.googleusercontent.com
+gdrive_client_secret = u6st0b0XrcreNuYSn_iJyCqx
+[core]
+remote = family_tree_gdfolder
