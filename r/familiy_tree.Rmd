@@ -26,12 +26,13 @@ library(grid)
 library(scales)
 library(dplyr)
 library(plotly)
+library(here)
 
-people <- read.csv2('people_aab.csv',
+people <- read.csv2(here('data', 'people_aab.csv'),
                     stringsAsFactors = FALSE)
-marriages <- read.csv2('marriages_aab.csv',
+marriages <- read.csv2(here('data', 'marriages_aab.csv'),
                        stringsAsFactors = FALSE)
-births <- read.csv2('births_aab.csv',
+births <- read.csv2(here('data', 'births_aab.csv'),
                     stringsAsFactors = FALSE)
 
 ```
