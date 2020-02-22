@@ -1,7 +1,0 @@
-md5: 7d4a8a0565874a6a7d9452ebb25acef7
-outs:
-- md5: 7fa6e9b8897416925e75abcd6ba87360
-  path: people_aab.csv
-  cache: true
-  metric: false
-  persist: false

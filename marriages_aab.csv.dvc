@@ -1,7 +1,0 @@
-md5: 419bff0e797950d6dd5d1e12ea42af8b
-outs:
-- md5: 3e0cf9a466f4af50d3b5e69a293c4db4
-  path: marriages_aab.csv
-  cache: true
-  metric: false
-  persist: false
